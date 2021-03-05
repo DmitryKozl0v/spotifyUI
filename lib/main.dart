@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_app/src/pages/home_page.dart';
+import 'package:flutter_web_app/src/pages/home_page_wrapper.dart';
  
 void main() => runApp(MyApp());
  

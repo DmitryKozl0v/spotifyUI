@@ -1,111 +1,75 @@
 import 'package:flutter/material.dart';
 
+
 import 'package:flutter_web_app/customNavBar.dart';
 import 'package:flutter_web_app/size_config.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
 
-class _HomePageState extends State<HomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-
-    MediaQueryData mediaQuery = MediaQuery.of(context);
-    SizeConfig().init(context);
-    
-
-    if(mediaQuery.orientation == Orientation.landscape){
-      return _landscapePage();
-    }else{
-      return _portraitPage();
-    }
-  }
-
-  Widget _landscapePage(){
-    return Scaffold(
+Widget landscapeHomePage(){
+  return Scaffold(
       body: Row(
         children: <Widget>[
-          _landscapeBlackHorizontalBar(context),
-          _landscapeMainScreen(context)
+          _blackHorizontalBar(),
+          _mainScreen()
         ]
       ),
       bottomNavigationBar: CustomNavBar(),
     );
-  }
+}
 
-  Widget _portraitPage(){
-    // return Scaffold(
-    //   body: Row(
-    //     children: <Widget>[
-    //       _blackHorizontalBar(context),
-    //       _mainScreen(context)
-    //     ]
-    //   ),
-    //   bottomNavigationBar: CustomNavBar(),
-    // );
-    return Container();
-  }
-
-  Widget _landscapeBlackHorizontalBar(BuildContext context){
-
-    Size size = MediaQuery.of(context).size;
+Widget _blackHorizontalBar(){
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15.0),
       color: Colors.black,
-      height: double.infinity,
-      width: size.width*0.18,
-      child: _lateralMenu(size),
+      height: SizeConfig.blockSizeVertical * 100,
+      width: SizeConfig.blockSizeHorizontal * 18,
+      child: _lateralMenu(),
     );
 
-  }
+}
 
-  Widget _landscapeMainScreen(BuildContext context){
-
-    Size size = MediaQuery.of(context).size;
+Widget _mainScreen(){
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
       color: Color.fromRGBO(22, 22, 22, 1.0),
       height: double.infinity,
-      width: SizeConfig.blockSizeHorizontal * 80,
+      width: SizeConfig.blockSizeHorizontal * 82,
       child: Stack(
         children: <Widget>[
           SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                SizedBox(height: size.height*0.09,),
-                _suggestionLists(size)
+                SizedBox(height: SizeConfig.blockSizeVertical * 9,),
+                _suggestionLists()
               ],
             ),
           ),
-          _topBar(size)
+          _topBar()
         ],
       )
     );
-  }
+}
 
-  _topBar(Size size){
+_topBar(){
     return Container(
-      height: size.height*0.09,
-      width: size.width*0.82,
+      height: SizeConfig.blockSizeVertical * 9,
+      width: SizeConfig.blockSizeHorizontal * 82,
       decoration: BoxDecoration(
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          _topNavigationButtons(size),
-          _profileButtons(size),
+          _topNavigationButtons(),
+          _profileButtons(),
         ],
       )
     );
   }
 
-  _topNavigationButtons(Size size){
+  _topNavigationButtons(){
     return Container(
       
       decoration: BoxDecoration(
@@ -142,75 +106,77 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _profileButtons(Size size){
+_profileButtons(){
 
-    return Container(
-      height: size.height*0.05,
-      padding: EdgeInsets.symmetric(horizontal: 5.0),
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(15, 15, 15, 0.8),
-        borderRadius: BorderRadius.circular(100.0)
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          dropdownColor: Color.fromRGBO(75, 75, 75, 1.0),
-          style: TextStyle(color: Colors.white),
-          hint: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(1.0),
-                child: Icon(Icons.person, color: Colors.white, size: 20,), 
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(75, 75, 75, 1.0),
-                  border: Border.all(color: Color.fromRGBO(75, 75, 75, 1.0)),
-                  borderRadius: BorderRadius.circular(100.0)
-                  ),
-              ),
-              SizedBox(width: 5.0,),
-              Text('Your UserName', style: TextStyle(color: Colors.white),),
-            ],
-          ),
-          icon: Icon(Icons.arrow_drop_down, color: Colors.white,),
-          items: <String>['Account', 'Profile', 'Log out'].map((String value) {
-            return new DropdownMenuItem<String>(
-              value: value,
-              child: new Text(value),
-            );
-          }).toList(),
-          onChanged: (_) {},
+  return Container(
+    height: SizeConfig.blockSizeVertical * 5,
+    padding: EdgeInsets.symmetric(horizontal: 5.0),
+    decoration: BoxDecoration(
+      color: Color.fromRGBO(15, 15, 15, 0.8),
+      borderRadius: BorderRadius.circular(100.0)
+    ),
+    child: DropdownButtonHideUnderline(
+      child: DropdownButton<String>(
+        dropdownColor: Color.fromRGBO(75, 75, 75, 1.0),
+        style: TextStyle(color: Colors.white),
+        hint: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(1.0),
+              child: Icon(Icons.person, color: Colors.white, size: 20,), 
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(75, 75, 75, 1.0),
+                border: Border.all(color: Color.fromRGBO(75, 75, 75, 1.0)),
+                borderRadius: BorderRadius.circular(100.0)
+                ),
+            ),
+            SizedBox(width: 5.0,),
+            Text('Your UserName', style: TextStyle(color: Colors.white),),
+          ],
         ),
-      )
-    );
-  }
+        icon: Icon(Icons.arrow_drop_down, color: Colors.white,),
+        items: <String>['Account', 'Profile', 'Log out'].map((String value) {
+          return new DropdownMenuItem<String>(
+            value: value,
+            child: new Text(value),
+          );
+        }).toList(),
+        onChanged: (_) {},
+      ),
+    )
+  );
+}
 
-  _suggestionLists(Size size){
+_suggestionLists(){
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: size.width*0.8,
+      width: SizeConfig.blockSizeHorizontal * 80,
       decoration: BoxDecoration(
         color: Color.fromRGBO(75, 75, 75, 1.0),
         borderRadius: BorderRadius.circular(10.0)
       ),
       child: Column(
         children: <Widget>[
-          _listOfSuggestions(size),
+          _listOfSuggestions(),
           SizedBox(height: 10.0,),
-          _listOfSuggestions(size),
+          _listOfSuggestions(),
           SizedBox(height: 10.0,),
-          _listOfSuggestions(size),
+          _listOfSuggestions(),
           SizedBox(height: 10.0,),
-          _listOfSuggestions(size),
+          _listOfSuggestions(),
         ],
       )
     );
   }
 
-  _listOfSuggestions(Size size){
+   
+
+  _listOfSuggestions(){
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-      height: size.height*0.5,
-      width: size.width*0.8,
+      height: SizeConfig.blockSizeVertical * 50,
+      width: SizeConfig.blockSizeHorizontal * 80,
       decoration: BoxDecoration(
         color: Color.fromRGBO(90, 90, 90, 1.0),
         borderRadius: BorderRadius.circular(10.0)
@@ -226,17 +192,17 @@ class _HomePageState extends State<HomePage> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(children: <Widget>[
-              _playlistCard(size),
+              _playlistCard(),
               SizedBox(width: 20.0,),
-              _playlistCard(size),
+              _playlistCard(),
               SizedBox(width: 20.0,),
-              _playlistCard(size),
+              _playlistCard(),
               SizedBox(width: 20.0,),
-              _playlistCard(size),
+              _playlistCard(),
               SizedBox(width: 20.0,),
-              _playlistCard(size),
+              _playlistCard(),
               SizedBox(width: 20.0,),
-              _playlistCard(size),
+              _playlistCard(),
               SizedBox(width: 20.0,)
             ],),
           )        
@@ -245,11 +211,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _playlistCard(Size size){
+  _playlistCard(){
     return Container(
       padding: EdgeInsets.all(15.0),
-      height: size.height*0.35,
-      width: size.width*0.13,
+      height: SizeConfig.blockSizeVertical * 35,
+      width: SizeConfig.blockSizeHorizontal * 13,
       decoration: BoxDecoration(
         color: Color.fromRGBO(110, 110, 110, 1.0),
         borderRadius: BorderRadius.circular(5.0),
@@ -257,8 +223,8 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: <Widget>[
           Container(
-            height: size.height*0.2,
-            width: size.width*0.1,
+            height: SizeConfig.blockSizeVertical * 20,
+            width: SizeConfig.blockSizeHorizontal * 10,
             decoration: BoxDecoration(
               color: Color.fromRGBO(130, 130, 130, 1.0),
               borderRadius: BorderRadius.circular(5.0)
@@ -273,36 +239,36 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _lateralMenu(Size size){
+_lateralMenu(){
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        _spotifyLogo(size),
+        _spotifyLogo(),
         SizedBox(height: 20.0,),
-        _pageSelector(size),
+        _pageSelector(),
         SizedBox(height: 20.0,),
-        _playlists(size),
+        _playlists(),
       ]
     );
-  }
+}
 
-  _spotifyLogo(Size size){
+_spotifyLogo(){
     return Container(
-      height: size.height*0.09,
-      width: size.width*0.15,
+      height: SizeConfig.blockSizeVertical * 9,
+      width: SizeConfig.blockSizeHorizontal * 15,
       decoration: BoxDecoration(
         color: Color.fromRGBO(75, 75, 75, 1.0),
         borderRadius: BorderRadius.circular(10.0)
       ),
       child: Center(child: Text('Spotify Logo', style: TextStyle(color: Colors.white),))
     );
-  }
+}
 
-  _pageSelector(Size size){
+_pageSelector(){
     return Container(
-      height: size.height*0.2,
-      width: size.width*0.15,
+      height: SizeConfig.blockSizeVertical * 20,
+      width: SizeConfig.blockSizeHorizontal * 15,
       decoration: BoxDecoration(
         color: Color.fromRGBO(75, 75, 75, 1.0),
         borderRadius: BorderRadius.circular(10.0)
@@ -321,12 +287,12 @@ class _HomePageState extends State<HomePage> {
         ]
       ),
     );
-  }
+}
 
-  _playlists(Size size){
+_playlists(){
     return Container(
-      height: size.height*0.4,
-      width: size.width*0.15,
+      height: SizeConfig.blockSizeVertical * 40,
+      width: SizeConfig.blockSizeHorizontal * 15,
       decoration: BoxDecoration(
         color: Color.fromRGBO(75, 75, 75, 1.0),
         borderRadius: BorderRadius.circular(10.0)
@@ -365,5 +331,4 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
 }
