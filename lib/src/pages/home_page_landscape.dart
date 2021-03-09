@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:flutter_web_app/customNavBar.dart';
 import 'package:flutter_web_app/size_config.dart';
 
 
-Widget landscapeHomePage(){
-  return Scaffold(
+class LandscapeHomePage extends StatefulWidget {
+  @override
+  _LandscapeHomePageState createState() => _LandscapeHomePageState();
+}
+
+class _LandscapeHomePageState extends State<LandscapeHomePage> {
+
+  int selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Row(
         children: <Widget>[
           _blackHorizontalBar(),
@@ -15,6 +30,7 @@ Widget landscapeHomePage(){
       ),
       bottomNavigationBar: CustomNavBar(),
     );
+  }
 }
 
 Widget _blackHorizontalBar(){
@@ -26,7 +42,6 @@ Widget _blackHorizontalBar(){
       width: SizeConfig.blockSizeHorizontal * 18,
       child: _lateralMenu(),
     );
-
 }
 
 Widget _mainScreen(){
@@ -83,7 +98,8 @@ Widget _header(){
     height: SizeConfig.blockSizeVertical * 50,
     width: SizeConfig.blockSizeHorizontal * 82,
     child: Container(
-      padding: EdgeInsets.only(top: 20.0, left: 20.0),
+      width: SizeConfig.blockSizeHorizontal * 60,
+      padding: EdgeInsets.only(top: 50.0, left: 30.0, right: 30.0),
       child: _latestReproduced()
     ),
   );
@@ -103,25 +119,19 @@ Widget _latestReproduced(){
     children: [
       Text('Greeting', style: _titleStyle,),
       SizedBox(height: 25.0,),
-      Row(children: <Widget>[
-        SizedBox(width: 5.0),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
         _albumCard(),
-        SizedBox(width: 30.0),
         _albumCard(),
-        SizedBox(width: 30.0),
         _albumCard(),
       ],),
       SizedBox(height: 15.0,),
-      Row(children: <Widget>[
-        SizedBox(width: 5.0),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
         _albumCard(),
-        SizedBox(width: 30.0),
         _albumCard(),
-        SizedBox(width: 30.0),
         _albumCard(),
       ],)
     ],
-  );
+  ); 
 }
 
 Widget _albumCard(){
@@ -215,9 +225,8 @@ Widget _profileButtons(){
   return Material(
     color: Colors.transparent,
     child: InkWell(
-      // hoverColor: Colors.white.withOpacity(0.03),
       borderRadius: BorderRadius.circular(100.0),
-      hoverColor: Colors.white,
+      hoverColor: Colors.white54,
       onTap: (){},
       child: Container(
         height: SizeConfig.blockSizeVertical * 5,
@@ -310,7 +319,7 @@ Widget _listOfSuggestions(){
         SizedBox(height: 10.0,),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: Row(children: <Widget>[
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
             _playlistCard(),
             SizedBox(width: 20.0,),
             _playlistCard(),
@@ -391,7 +400,8 @@ Widget _lateralMenu(){
     children: <Widget>[
       _spotifyLogo(),
       SizedBox(height: 20.0,),
-      _pageSelector(),
+      // _pageSelector(),
+      PageSelector(),
       SizedBox(height: 20.0,),
       _playlists(),
     ]
@@ -399,37 +409,151 @@ Widget _lateralMenu(){
 }
 
 Widget _spotifyLogo(){
-  return Container(
-    height: SizeConfig.blockSizeVertical * 9,
-    width: SizeConfig.blockSizeHorizontal * 15,
-    decoration: BoxDecoration(
-      color: Color.fromRGBO(75, 75, 75, 1.0),
-      borderRadius: BorderRadius.circular(10.0)
+  return Align(
+    alignment: Alignment.centerLeft,
+    child: Container(
+      padding: EdgeInsets.only(left: 20.0),
+      height: SizeConfig.blockSizeVertical * 9,
+      width: SizeConfig.blockSizeHorizontal * 15,
+      decoration: BoxDecoration(
+        // color: Color.fromRGBO(75, 75, 75, 1.0),
+        borderRadius: BorderRadius.circular(10.0)
+      ),
+      child: Image.asset(
+        'assets/img//Sputify_Logo_small.png',
+        fit: BoxFit.contain,
+      )
     ),
-    child: Center(child: Text('Spotify Logo', style: TextStyle(color: Colors.white),))
   );
 }
 
-Widget _pageSelector(){
-  return Container(
-    height: SizeConfig.blockSizeVertical * 20,
-    width: SizeConfig.blockSizeHorizontal * 15,
-    decoration: BoxDecoration(
-      color: Color.fromRGBO(75, 75, 75, 1.0),
-      borderRadius: BorderRadius.circular(10.0)
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Expanded(child: Container()),
-        Text('Home', style: TextStyle(color: Colors.white)),
-        Expanded(child: Container()),
-        Text('Search', style: TextStyle(color: Colors.white)),
-        Expanded(child: Container()),
-        Text('Your Library', style: TextStyle(color: Colors.white)),
-        Expanded(child: Container()),
-      ]
+class PageSelector extends StatefulWidget {
+  @override
+  _PageSelectorState createState() => _PageSelectorState();
+}
+
+class _PageSelectorState extends State<PageSelector> {
+
+  int tappedIndex;
+
+  TextStyle _selectorTextStyle = TextStyle(
+    color: Colors.grey,
+    fontSize: SizeConfig.blockSizeHorizontal * 1.2,
+  );
+
+  TextStyle _selectedTextStyle = TextStyle(
+    color: Colors.white,
+    fontSize: SizeConfig.blockSizeHorizontal * 1.2,
+  );
+
+  List _selectorContent = [
+    {'name': 'Home', 'icon': Icons.home},
+    {'name': 'Search', 'icon': Icons.search},
+    {'name': 'Your Library', 'icon': Icons.menu_book}
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    tappedIndex = 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      shrinkWrap: true,
+      itemCount: 3,
+      itemBuilder: (context, index) {
+        return Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(5.0),
+          child: InkWell(
+            onTap: (){},
+            borderRadius: BorderRadius.circular(5.0),
+            hoverColor: tappedIndex == index ? Colors.transparent : Colors.white24,
+            child: Container(
+              height: SizeConfig.blockSizeVertical * 7,
+              width: SizeConfig.blockSizeHorizontal * 15,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+                color: tappedIndex == index ? Colors.white12 : Colors.transparent,
+              ),
+              child: ListTile(
+                title: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(_selectorContent[index]['icon'], color: Colors.grey, size: 24,),
+                      SizedBox(width: 20.0),
+                      Text(_selectorContent[index]['name'], style: tappedIndex == index ? _selectedTextStyle : _selectorTextStyle),
+                    ],
+                  ),
+                ),
+                onTap:(){
+                  setState((){
+                    tappedIndex = index;
+                  });
+                }
+              )
+            ),
+          ),
+        );
+      }
+    ); 
+  }
+}
+
+// Widget _pageSelector(){
+
+//   return Container(
+//     height: SizeConfig.blockSizeVertical * 22,
+//     width: SizeConfig.blockSizeHorizontal * 15,
+//     decoration: BoxDecoration(
+//       borderRadius: BorderRadius.circular(10.0)
+//     ),
+//     child: Column(
+//       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: <Widget>[
+//         _selectorCard('Home', Icons.home),
+//         _selectorCard('Search', Icons.search),
+//         _selectorCard('Your Library', Icons.menu_book),
+//       ]
+//     ),
+//   );
+// }
+
+// ignore: unused_element
+Widget _selectorCard(String name, IconData icon){
+
+  return Material(
+    color: Colors.transparent,
+    child: InkWell(
+      borderRadius: BorderRadius.circular(5.0),
+      hoverColor: Colors.white24,
+      focusColor: Colors.white24,
+      onTap: (){
+
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        height: SizeConfig.blockSizeVertical * 6.7,
+        width: SizeConfig.blockSizeHorizontal * 15,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: 10.0),
+            Icon(icon, color: Colors.grey, size: 24,),
+            SizedBox(width: 20.0),
+            Text(name, style: TextStyle(color: Colors.white)),
+          ],
+        ),
+      ),
     ),
   );
 }

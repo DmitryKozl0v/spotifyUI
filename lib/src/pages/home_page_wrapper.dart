@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     
 
     if(mediaQuery.orientation == Orientation.landscape){
-      return landscapeHomePage();
+      return LandscapeHomePage();
     }else{
       return portraitHomePage();
     }
