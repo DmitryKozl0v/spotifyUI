@@ -145,7 +145,7 @@ Widget _albumCard(){
   return Material(
     color: Colors.transparent,
     child: InkWell(
-      hoverColor: Colors.white.withOpacity(0.03),
+      hoverColor: Colors.white.withOpacity(0.07),
       onTap: (){},
       child: Container(
         decoration: BoxDecoration(
@@ -400,10 +400,9 @@ Widget _lateralMenu(){
     children: <Widget>[
       _spotifyLogo(),
       SizedBox(height: 20.0,),
-      // _pageSelector(),
       PageSelector(),
       SizedBox(height: 20.0,),
-      _playlists(),
+      LateralPlaylists()
     ]
   );
 }
@@ -461,7 +460,8 @@ class _PageSelectorState extends State<PageSelector> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
       shrinkWrap: true,
       itemCount: 3,
       itemBuilder: (context, index) {
@@ -473,7 +473,7 @@ class _PageSelectorState extends State<PageSelector> {
             borderRadius: BorderRadius.circular(5.0),
             hoverColor: tappedIndex == index ? Colors.transparent : Colors.white24,
             child: Container(
-              height: SizeConfig.blockSizeVertical * 7,
+              height: SizeConfig.blockSizeVertical * 8,
               width: SizeConfig.blockSizeHorizontal * 15,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
@@ -506,98 +506,80 @@ class _PageSelectorState extends State<PageSelector> {
   }
 }
 
-// Widget _pageSelector(){
-
-//   return Container(
-//     height: SizeConfig.blockSizeVertical * 22,
-//     width: SizeConfig.blockSizeHorizontal * 15,
-//     decoration: BoxDecoration(
-//       borderRadius: BorderRadius.circular(10.0)
-//     ),
-//     child: Column(
-//       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: <Widget>[
-//         _selectorCard('Home', Icons.home),
-//         _selectorCard('Search', Icons.search),
-//         _selectorCard('Your Library', Icons.menu_book),
-//       ]
-//     ),
-//   );
-// }
-
-// ignore: unused_element
-Widget _selectorCard(String name, IconData icon){
-
-  return Material(
-    color: Colors.transparent,
-    child: InkWell(
-      borderRadius: BorderRadius.circular(5.0),
-      hoverColor: Colors.white24,
-      focusColor: Colors.white24,
-      onTap: (){
-
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        height: SizeConfig.blockSizeVertical * 6.7,
-        width: SizeConfig.blockSizeHorizontal * 15,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(width: 10.0),
-            Icon(icon, color: Colors.grey, size: 24,),
-            SizedBox(width: 20.0),
-            Text(name, style: TextStyle(color: Colors.white)),
-          ],
-        ),
-      ),
-    ),
-  );
+class LateralPlaylists extends StatefulWidget {
+  @override
+  _LateralPlaylistsState createState() => _LateralPlaylistsState();
 }
 
-Widget _playlists(){
-  return Container(
-    height: SizeConfig.blockSizeVertical * 40,
-    width: SizeConfig.blockSizeHorizontal * 15,
-    decoration: BoxDecoration(
-      color: Color.fromRGBO(75, 75, 75, 1.0),
-      borderRadius: BorderRadius.circular(10.0)
-    ),
-    child: SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-          Text('A playlist', style: TextStyle(color: Colors.white)),
-        ]
-      ),
-    ),
+class _LateralPlaylistsState extends State<LateralPlaylists> {
+
+  TextStyle _playlistsListTextStyle = TextStyle(
+    color: Colors.grey
   );
+
+  TextStyle _playlistsListHoveredTextStyle = TextStyle(
+    color: Colors.white
+  );
+
+  TextStyle _playlistHeaderTextStyle = TextStyle(
+    color: Colors.grey,
+    fontWeight: FontWeight.bold,
+    fontSize: SizeConfig.blockSizeHorizontal * 1.2,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: SizeConfig.blockSizeVertical * 42.5,
+      width: SizeConfig.blockSizeHorizontal * 15,
+      decoration: BoxDecoration(
+        // color: Color.fromRGBO(75, 75, 75, 1.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text('PLAYLISTS', style: _playlistHeaderTextStyle,),
+          SizedBox(height: 20.0,),
+          Row(
+            children: <Widget>[
+              Icon(Icons.add_box, size: 40, color: Colors.grey,),
+              SizedBox(width: 20),
+              Text('Create Playlist', style: _playlistHeaderTextStyle,)
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Icon(Icons.favorite, size: 40, color: Colors.grey,),
+              SizedBox(width: 20),
+              Text('Liked Songs', style: _playlistHeaderTextStyle,)
+            ],
+          ),
+          Divider(color: Colors.grey,),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: SizeConfig.blockSizeVertical * 20, 
+              minHeight: SizeConfig.blockSizeVertical * 2
+            ),
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: 50,
+              itemBuilder: (context, index){
+                return Material(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: ListTile(
+                    // shape: ShapeBorder,
+                    hoverColor: Colors.white12,
+                    onTap: (){},
+                    title: Text('Playlist ${index + 1}', style: _playlistsListTextStyle),
+                  ),
+                );
+              }
+            )
+          ),
+        ],
+      )  
+    );
+  }
 }
